@@ -1,0 +1,60 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>TechStore | Nueva Categoría</title>
+    
+    <link th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/bootstrap/css/jumbotron.css}" rel="stylesheet">
+    <link th:href="@{/bootstrap/css/sticky-footer-navbar.css}" rel="stylesheet">
+  </head>
+
+  <body>
+
+    <header th:insert="~{fragments/menu :: menu-principal}"></header>
+
+    <main role="main">     
+      <hr>
+      <div class="container" style="padding-top: 4.5rem;"> 
+
+        <div class="card">
+          <h4 class="card-header"><strong>Nueva Categoría de Producto</strong></h4>              
+          <div class="card-body">
+            
+           <form th:action="@{/categorias/save}" method="post">
+              
+              <div class="row">
+                <div class="col-md-6"> 
+                  <div class="form-group">
+                    <label for="nombre">Nombre de la Categoría</label>
+                    <input type="text" class="form-control" name="nombre" id="nombre" placeholder="Ej: Laptops, Periféricos, Componentes" required="required">
+                  </div>
+                </div>                
+              </div> 
+
+              <div class="row">
+                <div class="col-md-6"> 
+                  <div class="form-group">
+                    <label for="descripcion">Descripción</label>
+                    <textarea class="form-control" name="descripcion" id="descripcion" rows="2" placeholder="Breve descripción de la categoría"></textarea>
+                  </div> 
+                </div>                
+              </div> 
+              
+              <hr>
+              <button type="submit" title="Guardar la categoría" class="btn btn-primary">Guardar</button>
+              <a th:href="@{/categorias/index}" class="btn btn-secondary">Cancelar</a>
+            </form>
+
+          </div>
+        </div>
+      </div> 
+    </main>
+
+    <footer th:insert="~{fragments/footer :: pie-pagina}"></footer>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script th:src="@{/bootstrap/js/bootstrap.min.js}"></script> 
+  </body>
+</html>

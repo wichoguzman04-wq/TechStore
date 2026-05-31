@@ -1,0 +1,59 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>TechStore | Detalle del Producto</title>
+    <link th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/bootstrap/css/jumbotron.css}" rel="stylesheet">
+    <link th:href="@{/bootstrap/css/sticky-footer-navbar.css}" rel="stylesheet">
+  </head>
+
+  <body>
+
+    <header th:insert="~{fragments/menu :: menu-principal}"></header>
+
+    <main role="main">
+      <hr>
+      <div class="container" style="padding-top: 4.5rem;"> 
+
+        <div class="row">
+          <div class="col-md-3">            
+            <img class="rounded mx-auto d-block" 
+                 th:src="@{/images/{img} (img=${producto?.imagen != null && producto?.imagen != '' ? producto.imagen : 'no-image.png'})}" 
+                 alt="Imagen del producto" width="220" height="220">
+          </div>
+          <div class="col-md-9">
+            <div class="card">
+              <h4 class="card-header">Producto: <strong th:text="${producto?.nombre}">Nombre del producto</strong></h4>
+              <div class="card-body">
+                <h5 class="card-title"><strong>Categoría: </strong> <span>Tecnología</span></h5>
+                <h6 class="card-title"><strong>Publicado: </strong> <span th:text="${producto?.fecha != null ? #dates.format(producto.fecha, 'dd-MM-yyyy') : 'Sin fecha'}">01-01-2026</span></h6>
+                <h6 class="card-title"><strong>Precio: </strong> <span th:text="${'$' + producto?.precio}">$0.00</span></h6>
+                <p class="card-text" th:text="${producto?.descripcion}">Descripción corta...</p>
+                
+                <div class="card bg-light mb-3" >
+                  <div class="card-body">
+                    <h5 class="card-title">Detalles del Producto</h5>
+                    <p class="card-text" th:text="${producto?.detalle}">Descripción detallada...</p>
+                  </div>
+                </div>   
+                
+                <a class="btn btn-primary" th:href="@{/categorias/create}" role="button" title="Comprar ahora">
+                  <i class="fas fa-file" aria-hidden="true"></i> Comprar
+                </a>                            
+              </div>
+            </div>  
+          </div>
+        </div>
+
+      </div>
+    </main>
+
+    <footer th:insert="~{fragments/footer :: pie-pagina}"></footer>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
+  </body>
+</html>

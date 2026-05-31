@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>TechStore | Notificación</title>
+    
+    <link th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/bootstrap/css/jumbotron.css}" rel="stylesheet">
+    <link th:href="@{/bootstrap/css/sticky-footer-navbar.css}" rel="stylesheet">
+</head>
+<body>
+
+    <header th:insert="~{fragments/menu :: menu-principal}"></header>
+
+    <main role="main" class="container" style="padding-top: 5.5rem;">
+        
+        <div class="card mt-4">
+            <h4 class="card-header bg-warning text-dark">Notificación del Sistema</h4>
+            <div class="card-body">
+                <h5 class="card-title">Resultado de la operación</h5>
+                <p class="card-text">
+                    <strong th:text="${mensaje != null ? mensaje : 'El producto con ID ' + id + ' ha sido procesado correctamente.'}">
+                        Acción realizada con éxito.
+                    </strong>
+                </p>
+                <hr>
+                <a th:href="@{/productos/index}" class="btn btn-primary">Volver al Inventario</a>
+            </div>
+        </div>
+
+    </main>
+
+    <footer th:insert="~{fragments/footer :: pie-pagina}"></footer>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
+</body>
+</html>
