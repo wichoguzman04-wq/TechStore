@@ -5,10 +5,49 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>TechStore | Nuevo Producto</title>
 
+<!-- CSS Base -->
 <link th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
 <link th:href="@{/bootstrap/css/jumbotron.css}" rel="stylesheet">
 <link th:href="@{/bootstrap/css/sticky-footer-navbar.css}" rel="stylesheet">
 <link href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" rel="stylesheet">
+
+<!-- Fuentes e Iconos -->
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<style>
+    body { background-color: #0f172a; color: #e2e8f0; font-family: 'Poppins', sans-serif; padding-top: 5.5rem; }
+    
+    /* Contenedor y Tarjeta */
+    .card { background-color: #1e293b; border: 1px solid #334155; border-radius: 12px; box-shadow: 0 8px 30px rgba(0,0,0,0.4); }
+    .card-header { background-color: #0f172a; border-bottom: 1px solid #334155; color: #38bdf8; font-weight: 700; border-radius: 12px 12px 0 0 !important; }
+    
+    /* Textos y Etiquetas */
+    label, strong { font-weight: 600; color: #94a3b8; }
+    
+    /* Inputs y Formularios */
+    .form-control { background-color: #0f172a; border: 1px solid #334155; color: #f8fafc; border-radius: 8px; }
+    .form-control:focus { background-color: #0f172a; border-color: #38bdf8; box-shadow: 0 0 0 0.2rem rgba(56, 189, 248, 0.25); color: #ffffff; }
+    .form-control::placeholder { color: #64748b; }
+    
+    /* Opciones de Select */
+    select.form-control option { background-color: #0f172a; color: #f8fafc; }
+    
+    /* Botones */
+    .btn-primary { background-color: #0284c7; border-color: #0284c7; font-weight: 600; }
+    .btn-primary:hover { background-color: #0ea5e9; box-shadow: 0 0 15px rgba(14, 165, 233, 0.5); }
+    .btn-secondary { background-color: #334155; border-color: #334155; font-weight: 600; color: #e2e8f0; }
+    .btn-secondary:hover { background-color: #475569; border-color: #475569; color: #ffffff; }
+    
+    /* Alertas de error en modo oscuro */
+    .alert-danger { background-color: rgba(220, 38, 38, 0.15); border: 1px solid rgba(220, 38, 38, 0.3); color: #f87171; }
+    
+    /* Imagen de vista previa */
+    .img-preview { border: 2px dashed #334155; background-color: #0f172a; padding: 10px; border-radius: 8px; }
+    
+    /* Separador */
+    hr { border-top: 1px solid #334155; }
+</style>
 </head>
 
 <body>
@@ -16,22 +55,22 @@
 	<header th:insert="~{fragments/menu :: menu-principal}"></header>
 
 	<main role="main">
-		<hr>
-		<div class="container" style="padding-top: 4.5rem;">
+		<div class="container" style="padding-top: 2rem; padding-bottom: 3rem;">
 
-			<div class="card">
-				<h4 class="card-header"><strong>Datos del Producto</strong></h4>
-				<div class="card-body">
+			<div class="card shadow-sm">
+				<h4 class="card-header p-4"><i class="fas fa-microchip mr-2"></i><strong>Datos del Producto</strong></h4>
+				<div class="card-body p-4">
 					<form th:action="@{/productos/save}" th:object="${techStore}" method="post">
 
+						<!-- Manejo de Errores -->
 						<div th:if="${#fields.hasErrors('*')}" class='alert alert-danger' role='alert'>
-							Por favor corrija los siguientes errores:
-							<ul>
+							<i class="fas fa-exclamation-triangle mr-2"></i>Por favor corrija los siguientes errores:
+							<ul class="mt-2 mb-0">
 								<li th:each="err : ${#fields.errors('*')}" th:text="${err}" />
 							</ul>
 						</div>
 
-						<div class="row">
+						<div class="row mt-2">
 							<div class="col-md-3">
 								<div class="form-group">
 									<label for="nombre">Nombre</label> 
@@ -67,14 +106,16 @@
 							</div>
 
 							<div class="col-md-3">
-								<div class="form-check">
+								<div class="form-group">
 									<label><strong>Destacado</strong></label><br>
-									<input class="form-check-input" type="radio" th:field="*{destacado}" id="destacado1" value="1"> 
-									<label class="form-check-label" for="destacado1">Sí</label>
-								</div>
-								<div class="form-check">
-									<input class="form-check-input" type="radio" th:field="*{destacado}" id="destacado0" value="0"> 
-									<label class="form-check-label" for="destacado0">No</label>
+									<div class="custom-control custom-radio custom-control-inline mt-2">
+										<input class="custom-control-input" type="radio" th:field="*{destacado}" id="destacado1" value="1"> 
+										<label class="custom-control-label" for="destacado1" style="color: #e2e8f0;">Sí</label>
+									</div>
+									<div class="custom-control custom-radio custom-control-inline">
+										<input class="custom-control-input" type="radio" th:field="*{destacado}" id="destacado0" value="0"> 
+										<label class="custom-control-label" for="destacado0" style="color: #e2e8f0;">No</label>
+									</div>
 								</div>
 							</div>
 						</div>
@@ -82,35 +123,38 @@
 						<div class="row">
 							<div class="col-md-3">
 								<div class="form-group">
-									<label for="precio">Precio</label> 
+									<label for="precio">Precio ($)</label> 
 									<input type="number" step="0.01" class="form-control" th:field="*{precio}" id="precio" placeholder="0.00" required="required">
 								</div>
 							</div>
-							<div class="col-md-3">
-								<div class="form-group">
-									<label for="archivoImagen">Imagen</label> 
-									<input type="file" class="form-control-file" id="archivoImagen">
-								</div>
+							<div class="col-md-9">
+							    <div class="form-group">
+							        <label for="imagen">Imagen (URL de Internet)</label>
+							        <input type="text" class="form-control" name="imagen" id="imagen" th:field="*{imagen}" placeholder="https://ejemplo.com/imagen.png">
+							    </div>
 							</div>
 						</div>
 
-						<hr>
+						<hr class="mt-4 mb-4">
+                        
 						<div class="row">
 							<div class="col-md-9">
 								<div class="form-group">
-									<label for="detalles"><strong>Detalles</strong></label>
-									<textarea class="form-control" th:field="*{detalles}" id="detalles" rows="7"></textarea>
+									<label for="detalles"><strong>Detalles / Especificaciones Técnicas</strong></label>
+									<textarea class="form-control" th:field="*{detalles}" id="detalles" rows="7" placeholder="Escriba los detalles a profundidad del artículo..."></textarea>
 								</div>
 							</div>
-							<div class="col-md-3">
-								<label>Vista previa</label> 
-								<img class="rounded mx-auto d-block" th:src="@{/images/no-image.png}" alt="Producto" width="200" height="200">
+							<div class="col-md-3 text-center">
+								<label>Vista previa de caja</label> 
+								<img class="rounded mx-auto d-block img-preview mt-2" th:src="@{/images/no-image.png}" alt="Producto" width="100%" style="max-width: 200px; height: auto;">
 							</div>
 						</div>
 
-						<hr>
-						<button type="submit" class="btn btn-primary">Guardar</button>
-						<a th:href="@{/productos/index}" class="btn btn-secondary">Cancelar</a>
+						<hr class="mt-4 mb-4">
+						<div class="d-flex justify-content-start">
+						    <button type="submit" class="btn btn-primary px-4 py-2 mr-3"><i class="fas fa-save mr-2"></i>Guardar</button>
+						    <a th:href="@{/productos/index}" class="btn btn-secondary px-4 py-2"><i class="fas fa-times mr-2"></i>Cancelar</a>
+						</div>
 					</form>
 				</div>
 			</div>
@@ -119,6 +163,7 @@
 
 	<footer th:insert="~{fragments/footer :: pie-pagina}"></footer>
 
+	<!-- Scripts -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 	<script th:src="@{/bootstrap/js/bootstrap.min.js}"></script>

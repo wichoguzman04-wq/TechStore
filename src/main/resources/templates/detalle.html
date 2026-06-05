@@ -5,9 +5,44 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>TechStore | Detalle del Producto</title>
+    
     <link th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
     <link th:href="@{/bootstrap/css/jumbotron.css}" rel="stylesheet">
     <link th:href="@{/bootstrap/css/sticky-footer-navbar.css}" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* ==========================================
+           TEMA TECH/GAMER OSCURO
+           ========================================== */
+        body { background-color: #0f172a; color: #e2e8f0; font-family: 'Poppins', sans-serif; padding-top: 5.5rem; }
+        
+        /* Contenedores y Tarjetas */
+        .card { background-color: #1e293b; border: 1px solid #334155; border-radius: 12px; box-shadow: 0 8px 30px rgba(0,0,0,0.4); overflow: hidden; }
+        .card-header { background-color: #0f172a; border-bottom: 1px solid #334155; color: #38bdf8; font-weight: 700; font-size: 1.25rem; }
+        
+        /* Imagen del Producto */
+        .detail-img-container { background-color: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 20px; display: flex; justify-content: center; align-items: center; box-shadow: 0 8px 30px rgba(0,0,0,0.4); }
+        .detail-img { max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.5); border: 2px solid #334155; background-color: #0f172a; padding: 5px; }
+        
+        /* Textos y Etiquetas */
+        .text-muted { color: #94a3b8 !important; }
+        strong { color: #94a3b8; }
+        .text-highlight { color: #f8fafc; font-weight: 400; }
+        .price-text { color: #38bdf8; font-size: 1.8rem; font-weight: 700; text-shadow: 0 0 10px rgba(56, 189, 248, 0.3); }
+        
+        /* Tarjeta interior de Especificaciones */
+        .inner-card { background-color: #0f172a !important; border: 1px dashed #334155; border-radius: 8px; }
+        .inner-card .card-title { color: #38bdf8; font-weight: 600; }
+        
+        /* Botones */
+        .btn-primary { background-color: #0284c7; border-color: #0284c7; font-weight: 600; transition: all 0.3s; }
+        .btn-primary:hover { background-color: #0ea5e9; border-color: #0ea5e9; box-shadow: 0 0 15px rgba(14, 165, 233, 0.5); transform: translateY(-2px); }
+        .btn-outline-light { border-color: #334155; color: #e2e8f0; font-weight: 600; background-color: #1e293b; }
+        .btn-outline-light:hover { background-color: #334155; color: white; border-color: #475569; }
+    </style>
   </head>
 
   <body>
@@ -15,33 +50,64 @@
     <header th:insert="~{fragments/menu :: menu-principal}"></header>
 
     <main role="main">
-      <hr>
-      <div class="container" style="padding-top: 4.5rem;"> 
+      <div class="container" style="padding-top: 2rem; padding-bottom: 3rem;"> 
 
         <div class="row">
-          <div class="col-md-3">            
-            <img class="rounded mx-auto d-block" 
-                 th:src="@{/images/{img} (img=${producto?.imagen != null && producto?.imagen != '' ? producto.imagen : 'no-image.png'})}" 
-                 alt="Imagen del producto" width="220" height="220">
+          <div class="col-md-4 mb-4">  
+            <div class="detail-img-container">          
+                <img class="detail-img" 
+                     th:src="${!#strings.isEmpty(producto?.imagen) ? producto.imagen : 'https://via.placeholder.com/400/1e293b/94a3b8?text=Sin+Imagen'}" 
+                     alt="Imagen del producto">
+            </div>
+            
+            <div class="mt-4 text-center">
+                <a th:href="@{/productos/index}" class="btn btn-outline-light px-4 py-2 w-100 shadow-sm">
+                    <i class="fas fa-arrow-left mr-2"></i>Volver al Inventario
+                </a>
+            </div>
           </div>
-          <div class="col-md-9">
-            <div class="card">
-              <h4 class="card-header">Producto: <strong th:text="${producto?.nombre}">Nombre del producto</strong></h4>
-              <div class="card-body">
-                <h5 class="card-title"><strong>Categoría: </strong> <span>Tecnología</span></h5>
-                <h6 class="card-title"><strong>Publicado: </strong> <span th:text="${producto?.fecha != null ? #dates.format(producto.fecha, 'dd-MM-yyyy') : 'Sin fecha'}">01-01-2026</span></h6>
-                <h6 class="card-title"><strong>Precio: </strong> <span th:text="${'$' + producto?.precio}">$0.00</span></h6>
-                <p class="card-text" th:text="${producto?.descripcion}">Descripción corta...</p>
+          
+          <div class="col-md-8">
+            <div class="card h-100">
+              <h4 class="card-header p-4">
+                <i class="fas fa-box-open mr-2"></i>Producto: <strong class="text-white ml-1" th:text="${producto?.nombre}">Nombre del producto</strong>
+              </h4>
+              <div class="card-body p-4">
                 
-                <div class="card bg-light mb-3" >
-                  <div class="card-body">
-                    <h5 class="card-title">Detalles del Producto</h5>
-                    <p class="card-text" th:text="${producto?.detalles}">Descripción detallada...</p>
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <h6 class="card-title mb-3">
+                            <strong><i class="fas fa-tags mr-2"></i>Categoría: </strong> 
+                            <span class="text-highlight" th:switch="${producto?.idCategoria}">
+                                <span th:case="1">Laptops</span>
+                                <span th:case="2">Periféricos</span>
+                                <span th:case="3">Componentes</span>
+                                <span th:case="4">Monitores</span>
+                                <span th:case="*">Sin categoría asignada</span>
+                            </span>
+                        </h6>
+                        <h6 class="card-title mb-3"><strong><i class="far fa-calendar-alt mr-2"></i>Publicado: </strong> <span class="text-highlight" th:text="${producto?.fecha != null ? #dates.format(producto.fecha, 'dd-MM-yyyy') : 'Sin fecha'}">01-01-2026</span></h6>
+                    </div>
+                    <div class="col-md-6 text-md-right">
+                        <h6 class="card-title mb-1"><strong>Precio Unitario</strong></h6>
+                        <span class="price-text" th:text="${producto?.precio != null ? '$' + producto.precio : '$0.00'}"></span>
+                    </div>
+                </div>
+
+                <h6 class="mt-2 mb-2"><strong><i class="fas fa-info-circle mr-2"></i>Descripción general</strong></h6>
+                <p class="card-text text-highlight mb-4" th:text="${producto?.descripcion}">Descripción corta...</p>
+                
+                <div class="card inner-card mb-4" >
+                  <div class="card-body p-4">
+                    <h5 class="card-title mb-3"><i class="fas fa-list-ul mr-2"></i>Detalles y Especificaciones</h5>
+                    <p class="card-text text-highlight" style="white-space: pre-line; line-height: 1.6;" th:text="${producto?.detalles}">Descripción detallada...</p>
                   </div>
                 </div>   
                 
-                <a class="btn btn-primary" th:href="@{/categorias/create}" role="button" title="Comprar ahora">
-                  <i class="fas fa-file" aria-hidden="true"></i> Comprar
+                <hr style="border-color: #334155;" class="mb-4">
+                
+                <a class="btn btn-primary px-5 py-3 shadow-sm" th:href="@{/categorias/create}" role="button" title="Comprar ahora">
+                  <i class="fas fa-shopping-cart mr-2"></i> Comprar
                 </a>                            
               </div>
             </div>  

@@ -8,5 +8,7 @@ public interface ITechStoreService {
 	List<TechStore> buscarTodo();
 	TechStore buscarPorId(Integer id);
 	void guardar(TechStore producto);
-	void eliminar(Integer id); 
+	void eliminar(Integer id);
+	
+	List<TechStore> buscarPorFiltros(String busqueda, Integer categoria);
 }

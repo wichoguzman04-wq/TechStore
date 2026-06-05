@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.TechStore.Services.ICategoriaService;
 import com.TechStore.Services.ITechStoreService;
 import com.TechStore.models.TechStore;
 
@@ -27,18 +28,43 @@ public class TechStoreController {
 
     @Autowired
     private ITechStoreService service;
+    
+    @Autowired
+    private ICategoriaService categoriaService;
 
-    @GetMapping("/delete")
-    public String eliminar(@RequestParam("id") int id, RedirectAttributes attributes) {
-        System.out.println("Eliminando producto con id: " + id);
+    @GetMapping("/index")
+    public String mostrarIndex(Model model) {
+        List<TechStore> lista = service.buscarTodo(); 
+        model.addAttribute("productos", lista); 
+        model.addAttribute("listaCategorias", categoriaService.buscarTodas());
+        return "listado"; 
+    }
+
+    @GetMapping("/search")
+    public String buscarProducto(@RequestParam(value = "busqueda", required = false) String busqueda, 
+                                 @RequestParam(value = "categoria", required = false) Integer categoria, 
+                                 Model model) {
+
+        List<TechStore> lista = service.buscarPorFiltros(busqueda, categoria);
         
-        // Ejecuta la eliminación a través del servicio
-        service.eliminar(id);
+        model.addAttribute("productos", lista);
+        return "listado";
+    }
+
+    @GetMapping("/create")
+    public String crear(TechStore techStore, Model model) { 
+        model.addAttribute("listaCategorias", categoriaService.buscarTodas());
+        return "formProducto";
+    }
+    @PostMapping("/save")
+    public String guardar(TechStore techStore, BindingResult result, RedirectAttributes attributes) {
+        if (result.hasErrors()) {
+            return "formProducto";
+        }
         
-        // Configura el mensaje para la alerta verde en tu HTML
-        attributes.addFlashAttribute("msg", "¡Producto eliminado del inventario con éxito!");
+        service.guardar(techStore);
         
-        // Redirige a la vista del inventario
+        attributes.addFlashAttribute("msg", "¡Producto guardado con éxito!");
         return "redirect:/productos/index";
     }
 
@@ -49,28 +75,18 @@ public class TechStoreController {
         return "detalle";
     }
 
-    @GetMapping("/create")
-    public String crear(TechStore producto) { 
+    @GetMapping("/edit/{id}")
+    public String editarProducto(@PathVariable("id") int id, Model model) {
+        TechStore producto = service.buscarPorId(id);
+        model.addAttribute("techStore", producto); 
         return "formProducto";
     }
-    
-    @PostMapping("/save")
-    public String guardar(TechStore producto, BindingResult result, RedirectAttributes attributes) {
-        if (result.hasErrors()) {
-            return "formProducto";
-        }
-        
-        service.guardar(producto);
-        
-        attributes.addFlashAttribute("msg", "¡Producto guardado con éxito!");
-        return "redirect:/productos/index";
-    }
 
-    @GetMapping("/index")
-    public String mostrarIndex(Model model) {
-        List<TechStore> lista = service.buscarTodo(); 
-        model.addAttribute("productos", lista); 
-        return "listado"; 
+    @GetMapping("/delete")
+    public String eliminar(@RequestParam("id") int id, RedirectAttributes attributes) {
+        service.eliminar(id);
+        attributes.addFlashAttribute("msg", "¡Producto eliminado del inventario con éxito!");
+        return "redirect:/productos/index";
     }
 
     @InitBinder

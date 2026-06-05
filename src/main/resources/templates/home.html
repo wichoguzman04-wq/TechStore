@@ -9,11 +9,92 @@
     <link th:href="@{/bootstrap/css/jumbotron.css}" rel="stylesheet">
     <link th:href="@{/bootstrap/css/sticky-footer-navbar.css}" rel="stylesheet">
     
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
     <style>
+        /* ==========================================
+           TEMA TECH/GAMER OSCURO
+           ========================================== */
         html, body { height: 100%; margin: 0; padding: 0; }
-        body { display: flex; flex-direction: column; padding-top: 5.5rem; }
+        body { 
+            display: flex; flex-direction: column; padding-top: 5.5rem; 
+            background-color: #0f172a; color: #e2e8f0; font-family: 'Poppins', sans-serif;
+        }
         main { flex: 1 0 auto; }
         footer { flex-shrink: 0; width: 100% !important; }
+
+        /* Jumbotron (Banner Principal) */
+        .jumbotron {
+            background-color: #1e293b;
+            border-bottom: 1px solid #334155;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+            background-image: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%);
+            border-radius: 0 0 20px 20px;
+            padding-bottom: 3rem;
+        }
+        .jumbotron h3 { font-weight: 700; color: #f8fafc; letter-spacing: 0.5px; }
+        .text-neon { color: #38bdf8; text-shadow: 0 0 15px rgba(56, 189, 248, 0.4); }
+
+        /* Formulario de Búsqueda */
+        .form-inline .form-control, .form-inline .custom-select {
+            background-color: #0f172a;
+            border: 1px solid #334155;
+            color: #f8fafc;
+            border-radius: 8px;
+        }
+        .form-inline .form-control:focus, .form-inline .custom-select:focus {
+            background-color: #0f172a;
+            border-color: #38bdf8;
+            box-shadow: 0 0 0 0.2rem rgba(56, 189, 248, 0.25);
+            color: #ffffff;
+        }
+        .custom-select option { background-color: #0f172a; color: #f8fafc; }
+
+        /* Títulos */
+        h2.font-weight-bold { color: #38bdf8; letter-spacing: 2px; text-shadow: 0 0 10px rgba(56, 189, 248, 0.2); }
+        hr.title-divider { border-top: 2px solid #334155; width: 150px; margin: 1rem auto 3rem auto; }
+
+        /* Tarjeta de Producto (Diseño Horizontal) */
+        .product-card {
+            background-color: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 12px;
+            transition: transform 0.3s, box-shadow 0.3s;
+            overflow: hidden;
+        }
+        .product-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.6);
+            border-color: #38bdf8;
+        }
+        .img-container {
+            background-color: #0f172a;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-right: 1px solid #334155;
+        }
+        .product-img {
+            max-width: 100%;
+            height: auto;
+            max-height: 220px;
+            object-fit: contain;
+            filter: drop-shadow(0 5px 10px rgba(0,0,0,0.4));
+        }
+        
+        /* Textos de la tarjeta */
+        .card-body h2 { color: #f8fafc; font-size: 1.5rem; font-weight: 600; }
+        .card-title strong { color: #94a3b8; }
+        .card-title span { color: #e2e8f0; }
+        .product-desc { color: #94a3b8; font-size: 0.95rem; line-height: 1.6; }
+
+        /* Botones */
+        .btn-primary { background-color: #0284c7; border-color: #0284c7; font-weight: 600; border-radius: 8px; }
+        .btn-primary:hover { background-color: #0ea5e9; border-color: #0ea5e9; box-shadow: 0 0 15px rgba(14, 165, 233, 0.5); }
+        .btn-secondary { background-color: #334155; border-color: #334155; font-weight: 600; color: #e2e8f0; border-radius: 8px; }
+        .btn-secondary:hover { background-color: #475569; border-color: #475569; color: #ffffff; }
     </style>
 </head>
 
@@ -24,55 +105,73 @@
     <main role="main">
 
         <div class="jumbotron">
-            <div class="container">
-                <h3 class="mt-5">Encuentra los mejores productos tecnológicos.</h3>
-                Puedes buscar por descripción y categoría.
-                <form class="form-inline">
-                    <input type="text" class="form-control mb-3" placeholder="Escriba una búsqueda">&nbsp;
-                    <select class="custom-select custom-select mb-3">
-                        <option selected>Seleccione una categoría</option>
+            <div class="container text-center">
+                <h3 class="mt-4 mb-3">Encuentra los mejores <span class="text-neon">productos tecnológicos.</span></h3>
+                <p class="text-muted mb-4">Puedes buscar por descripción y categoría.</p>
+                
+                <form th:action="@{/productos/search}" method="get" class="form-inline justify-content-center">
+                    <input type="text" class="form-control mb-3 mr-sm-3 px-3" name="busqueda" placeholder="Escriba una búsqueda" style="min-width: 300px;">
+                    
+                    <select class="custom-select mb-3 mr-sm-3 px-3" name="categoria">
+                        <option value="">Seleccione una categoría</option>
                         <option value="1">Laptops</option>
                         <option value="2">Periféricos</option>
                         <option value="3">Componentes</option>
                         <option value="4">Monitores</option>
-                    </select>&nbsp;
-                    <button type="submit" class="btn btn-primary mb-3">Buscar</button>
+                    </select>
+                    
+                    <button type="submit" class="btn btn-primary mb-3 px-4"><i class="fas fa-search mr-2"></i>Buscar</button>
                 </form>
             </div>
         </div>
-        <hr>
 
-        <div class="container">
-            <h2 class="font-weight-bold text-center text-capitalize">DESTACADOS</h2>
-            <hr>
+        <div class="container mb-5">
+            <h2 class="font-weight-bold text-center text-capitalize mt-2"><i class="fas fa-star mr-2 text-neon"></i>DESTACADOS</h2>
+            <hr class="title-divider">
 
-            <div class="row" th:each="prod : ${productos}">
-                <div class="col-md-3">
-                    <img class="rounded mx-auto d-block"
-                        th:src="@{/images/{img} (img=${prod?.imagen != null && prod?.imagen != '' ? prod.imagen : 'no-image.png'})}"
-                        alt="Imagen del producto" width="220" height="220">
+            <div th:each="prod : ${productos}" class="card product-card mb-4">
+                <div class="row no-gutters">
+                    <div class="col-md-3 img-container">
+                        <img class="product-img"
+                             th:src="${prod?.imagen != null && prod?.imagen != '' ? prod.imagen : 'https://via.placeholder.com/220/1e293b/94a3b8?text=Sin+Imagen'}"
+                             alt="Imagen del producto">
+                    </div>
+                    
+                    <div class="col-md-9">
+                        <div class="card-body p-4">
+                            <h2 th:text="${prod?.nombre}">Nombre del Producto</h2>
+
+                            <div class="row mt-3 mb-3">
+                                <div class="col-sm-6">
+                                    <h6 class="card-title mb-2">
+                                        <i class="fas fa-microchip mr-2 text-muted"></i><strong>Categoría: </strong> <span>Tecnología</span>
+                                    </h6>
+                                </div>
+                                <div class="col-sm-6">
+                                    <h6 class="card-title mb-2">
+                                        <i class="far fa-calendar-alt mr-2 text-muted"></i><strong>Publicado: </strong> 
+                                        <span th:text="${prod?.fecha != null ? #dates.format(prod.fecha, 'dd-MM-yyyy') : 'Sin fecha'}">01-01-2026</span>
+                                    </h6>
+                                </div>
+                            </div>
+
+                            <p class="product-desc mb-4" th:text="${prod?.descripcion}">Descripción detallada del producto...</p>
+
+                            <div class="mt-auto">
+                                <a class="btn btn-secondary px-4 py-2"
+                                   th:href="@{/productos/view/{id} (id=${prod?.id})}" role="button">
+                                   <i class="fas fa-eye mr-2"></i>Ver detalles &raquo;
+                                </a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="col-md-9">
-                    <h2 th:text="${prod?.nombre}">Nombre del Producto</h2>
-
-                    <h6 class="card-title">
-                        <strong>Categoría: </strong> <span>Tecnología</span>
-                    </h6>
-
-                    <h6 class="card-title">
-                        <strong>Publicado: </strong> <span
-                            th:text="${prod?.fecha != null ? #dates.format(prod.fecha, 'dd-MM-yyyy') : 'Sin fecha'}">01-01-2026</span>
-                    </h6>
-
-                    <p th:text="${prod?.descripcion}">Descripción detallada del producto...</p>
-
-                    <p>
-                        <a class="btn btn-secondary"
-                            th:href="@{/productos/view/{id} (id=${prod?.id})}" role="button">Ver detalles &raquo;</a>
-                    </p>
-                </div>
-                <hr class="col-12">
             </div>
+            
+            <div th:if="${productos == null or productos.isEmpty()}" class="text-center mt-5 mb-5">
+                <p class="text-muted"><i class="fas fa-box-open fa-3x mb-3"></i><br>Aún no hay productos para mostrar.</p>
+            </div>
+
         </div>
     </main>
 

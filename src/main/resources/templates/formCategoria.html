@@ -1,6 +1,6 @@
 <!doctype html>
 <html xmlns:th="http://www.thymeleaf.org" lang="es">
-  <head>
+<head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>TechStore | Nueva Categoría</title>
@@ -8,43 +8,72 @@
     <link th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
     <link th:href="@{/bootstrap/css/jumbotron.css}" rel="stylesheet">
     <link th:href="@{/bootstrap/css/sticky-footer-navbar.css}" rel="stylesheet">
-  </head>
+    
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ==========================================
+           TEMA TECH/GAMER OSCURO
+           ========================================== */
+        body { background-color: #0f172a; color: #e2e8f0; font-family: 'Poppins', sans-serif; padding-top: 5.5rem; }
+        
+        /* Tarjeta */
+        .card { background-color: #1e293b; border: 1px solid #334155; border-radius: 12px; box-shadow: 0 8px 30px rgba(0,0,0,0.4); }
+        .card-header { background-color: #0f172a; border-bottom: 1px solid #334155; color: #38bdf8; font-weight: 700; border-radius: 12px 12px 0 0 !important; }
+        
+        /* Inputs y Labels */
+        label { font-weight: 600; color: #94a3b8; }
+        .form-control { background-color: #0f172a; border: 1px solid #334155; color: #f8fafc; border-radius: 8px; }
+        .form-control:focus { background-color: #0f172a; border-color: #38bdf8; box-shadow: 0 0 0 0.2rem rgba(56, 189, 248, 0.25); color: #ffffff; }
+        
+        /* Botones */
+        .btn-primary { background-color: #0284c7; border-color: #0284c7; font-weight: 600; }
+        .btn-primary:hover { background-color: #0ea5e9; border-color: #0ea5e9; box-shadow: 0 0 15px rgba(14, 165, 233, 0.5); }
+        .btn-secondary { background-color: #334155; border-color: #334155; font-weight: 600; color: #e2e8f0; }
+        .btn-secondary:hover { background-color: #475569; border-color: #475569; color: #ffffff; }
+    </style>
+</head>
 
-  <body>
+<body>
 
     <header th:insert="~{fragments/menu :: menu-principal}"></header>
 
     <main role="main">     
-      <hr>
-      <div class="container" style="padding-top: 4.5rem;"> 
+      <div class="container" style="padding-top: 2rem;"> 
 
-        <div class="card">
-          <h4 class="card-header"><strong>Nueva Categoría de Producto</strong></h4>              
-          <div class="card-body">
+        <div class="card shadow-sm">
+          <h4 class="card-header p-4"><i class="fas fa-folder-plus mr-2"></i><strong>Nueva Categoría de Producto</strong></h4>              
+          <div class="card-body p-4">
             
-           <form th:action="@{/categorias/save}" method="post">
+           <form th:action="@{/categorias/save}" th:object="${categoria}" method="post">
               
-              <div class="row">
-                <div class="col-md-6"> 
-                  <div class="form-group">
-                    <label for="nombre">Nombre de la Categoría</label>
-                    <input type="text" class="form-control" name="nombre" id="nombre" placeholder="Ej: Laptops, Periféricos, Componentes" required="required">
-                  </div>
-                </div>                
-              </div> 
+			<form th:action="@{/categorias/save}" th:object="${categoria}" method="post">
+			    <input type="hidden" th:field="*{id}">
+			    
+			    <div class="form-group">
+			        <label>Nombre de la Categoría</label>
+			        <input type="text" class="form-control" th:field="*{nomCategoria}" required>
+			    </div>
+			    <div class="form-group">
+			        <label>Descripción</label>
+			        <textarea class="form-control" th:field="*{descripcion}" rows="2"></textarea>
+			    </div>
+			    <button type="submit" class="btn btn-primary">Guardar</button>
+			</form>
 
               <div class="row">
                 <div class="col-md-6"> 
                   <div class="form-group">
                     <label for="descripcion">Descripción</label>
-                    <textarea class="form-control" name="descripcion" id="descripcion" rows="2" placeholder="Breve descripción de la categoría"></textarea>
+                    <textarea class="form-control" th:field="*{descripcion}" id="descripcion" rows="3" placeholder="Breve descripción de la categoría"></textarea>
                   </div> 
                 </div>                
               </div> 
               
-              <hr>
-              <button type="submit" title="Guardar la categoría" class="btn btn-primary">Guardar</button>
-              <a th:href="@{/categorias/index}" class="btn btn-secondary">Cancelar</a>
+              <hr style="border-color: #334155;">
+              <button type="submit" title="Guardar la categoría" class="btn btn-primary px-4 py-2"><i class="fas fa-save mr-2"></i>Guardar</button>
+              <a th:href="@{/categorias/index}" class="btn btn-secondary px-4 py-2"><i class="fas fa-times mr-2"></i>Cancelar</a>
             </form>
 
           </div>
@@ -56,5 +85,5 @@
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <script th:src="@{/bootstrap/js/bootstrap.min.js}"></script> 
-  </body>
+</body>
 </html>

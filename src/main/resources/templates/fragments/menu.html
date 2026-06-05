@@ -5,29 +5,32 @@
 </head>
 <body>
 
-    <nav th:fragment="menu-principal" class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+    <nav th:fragment="menu-principal" class="navbar navbar-expand-md fixed-top" style="background-color: #0f172a; border-bottom: 1px solid #334155; box-shadow: 0 4px 15px rgba(0,0,0,0.5);">
         <div class="container">
-            <a class="navbar-brand" th:href="@{/}">TechStore</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
+            <a class="navbar-brand font-weight-bold" th:href="@{/}" style="color: #38bdf8; letter-spacing: 1px; text-shadow: 0 0 8px rgba(56, 189, 248, 0.3);">
+                <i class="fas fa-microchip mr-2"></i>TechStore
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation" style="border-color: #334155;">
+                <span class="navbar-toggler-icon" style="background-image: url('data:image/svg+xml;charset=utf8,%3Csvg viewBox=\'0 0 30 30\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cpath stroke=\'rgba(56, 189, 248, 1)\' stroke-width=\'2\' stroke-linecap=\'round\' stroke-miterlimit=\'10\' d=\'M4 7h22M4 15h22M4 23h22\'/%3E%3C/svg%3E');"></span>
             </button>
 
             <div class="collapse navbar-collapse" id="navbarsExampleDefault">
                 <ul class="navbar-nav me-auto mr-auto">
                     <li class="nav-item">
-                        <a class="nav-link" th:href="@{/}">Inicio</a>
+                        <a class="nav-link" th:href="@{/}" style="color: #e2e8f0; font-weight: 500; transition: color 0.3s;">Inicio</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" th:href="@{/productos/index}">Inventario</a> 
+                        <a class="nav-link" th:href="@{/productos/index}" style="color: #e2e8f0; font-weight: 500; transition: color 0.3s;">Inventario</a> 
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" th:href="@{/productos/create}">Nuevo Producto</a>
+                        <a class="nav-link" th:href="@{/productos/create}" style="color: #e2e8f0; font-weight: 500; transition: color 0.3s;">Nuevo Producto</a>
                     </li>           
                 </ul>  
                 
                 <div class="form-inline my-2 my-lg-0">
-                    <a class="btn btn-outline-light" th:href="@{#}" style="margin-right: 8px;">Ingresar</a>
-                    <a class="btn btn-primary" th:href="@{#}">Registrarse</a>
+                    <a class="btn btn-outline-light" th:href="@{#}" style="margin-right: 8px; border-color: #334155; color: #94a3b8; font-weight: 600;">Ingresar</a>
+                    <a class="btn btn-primary" th:href="@{#}" style="background-color: #0284c7; border-color: #0284c7; font-weight: 600; box-shadow: 0 0 10px rgba(2, 132, 199, 0.4);">Registrarse</a>
                 </div>
             </div>
         </div>

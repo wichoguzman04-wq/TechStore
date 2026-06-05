@@ -32,4 +32,17 @@ public class TechStoreServiceImpl implements ITechStoreService {
     public void eliminar(Integer id) {
         repository.deleteById(id);
     }
+
+
+    @Override
+    public List<TechStore> buscarPorFiltros(String busqueda, Integer categoria) {   
+        String texto = (busqueda == null) ? "" : busqueda;
+        
+        if (categoria == null || categoria == 0) {
+            return repository.buscarSoloTexto(texto);
+        } 
+        else {
+            return repository.buscarTextoYCategoria(texto, categoria);
+        }
+    }
 }
