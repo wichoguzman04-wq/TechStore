@@ -8,5 +8,5 @@ public interface ITechStoreService {
 	List<TechStore> buscarTodo();
 	TechStore buscarPorId(Integer id);
 	void guardar(TechStore producto);
-	
+	void eliminar(Integer id); 
 }

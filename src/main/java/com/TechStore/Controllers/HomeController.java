@@ -13,7 +13,7 @@ import com.TechStore.models.TechStore;
 @Controller
 public class HomeController {
 
-    @Autowired 
+    @Autowired
     private ITechStoreService service;
 
     @GetMapping("/")
@@ -31,7 +31,7 @@ public class HomeController {
     }
 
     @GetMapping("/detalle/{id}")
-    public String mostrarDetalle(@PathVariable("id") Integer id, Model model) { 
+    public String mostrarDetalle(@PathVariable("id") int id, Model model) {
         TechStore producto = service.buscarPorId(id); 
         model.addAttribute("producto", producto);
         return "detalle"; 
@@ -56,9 +56,5 @@ public class HomeController {
     @GetMapping("/listCategoria")
     public String mostrarListadoCategorias() {
         return "listCategoria";
-    }
-    @GetMapping("/create")
-    public String crear(TechStore techStore) { 
-        return "productos/formProducto"; 
     }
 }

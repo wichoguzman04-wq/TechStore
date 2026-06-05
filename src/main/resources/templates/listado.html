@@ -2,78 +2,81 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>TechStore | Gestión de Productos</title>
+    <title>TechStore | Inventario de Productos</title>
     <link th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/bootstrap/css/sticky-footer-navbar.css}" rel="stylesheet">
+    <style>
+        body { padding-top: 5.5rem; }
+        .container-fluid { padding-left: 5%; padding-right: 5%; }
+        .table thead th { vertical-align: middle; text-transform: uppercase; font-size: 0.9rem; padding: 15px; }
+        .prod-img { object-fit: cover; border: 1px solid #dee2e6; }
+        .btn-detail { background-color: #007bff; border-color: #007bff; color: white; padding: 0.5rem 1rem; margin-right: 8px; }
+        .btn-detail:hover { background-color: #0069d9; color: white; }
+        .btn-delete { background-color: #dc3545; border-color: #dc3545; color: white; padding: 0.5rem 1rem; }
+        .btn-delete:hover { background-color: #c82333; color: white; }
+        .badge-yes { background-color: #d1e7dd; color: #0f5132; border: 1px solid #badbcc; padding: 0.6em 1em; font-weight: bold; }
+        .badge-no { background-color: #f8d7da; color: #842029; border: 1px solid #f5c2c7; padding: 0.6em 1em; font-weight: bold; }
+        .td-actions { min-width: 220px; }
+        .price-text { font-weight: 600; color: #333; font-size: 1.1rem; }
+    </style>
 </head>
-<body class="container mt-5">
+<body class="bg-light">
 
-    <div class="card">
-        <h2 class="card-header d-flex justify-content-between align-items-center">
-            Inventario de Productos
-            <a th:href="@{/productos/create}" class="btn btn-primary btn-sm">Nuevo Producto</a>
-        </h2>
-        
-        <div class="card-body">
-            
-            <div th:if="${msg != null}" class="alert alert-success alert-dismissible fade show" role="alert">
-                <span th:text="${msg}"></span>
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+    <header th:insert="~{fragments/menu :: menu-principal}"></header>
+
+    <div class="container-fluid mt-4">
+        <div class="d-flex align-items-center mb-4">
+            <h1 class="h2 mb-0 text-dark font-weight-bold">Inventario TechStore</h1>
+        </div>
+
+        <div class="card shadow-sm border-0">
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="bg-dark text-white">
+                            <tr>
+                                <th class="ps-4">Vista</th>
+                                <th>ID</th>
+                                <th>Producto</th>
+                                <th>Publicación</th>
+                                <th>Precio</th>
+                                <th style="width: 30%;">Descripción</th>
+                                <th class="text-center">Destacado</th>
+                                <th class="text-center pe-4">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="prod : ${productos}">
+                                <td class="ps-4">
+                                    <img th:src="@{/images/{img}(img=${prod?.imagen != null && prod?.imagen != '' ? prod.imagen : 'no-image.png'})}"
+                                         width="75" height="75" class="rounded prod-img shadow-sm" />
+                                </td>
+                                <td class="font-weight-bold" th:text="${prod?.id}"></td>
+                                <td class="font-weight-bold" th:text="${prod?.nombre}"></td>
+                                <td class="text-muted" th:text="${prod?.fecha != null ? #dates.format(prod.fecha, 'dd-MM-yyyy') : 'Sin fecha'}"></td>
+                                <td><span class="price-text" th:text="${'$' + prod?.precio}"></span></td>
+                                <td class="text-muted small" th:text="${prod?.descripcion}"></td>
+                                <td class="text-center">
+                                    <span th:if="${prod?.destacado == 1}" class="badge badge-yes">SÍ</span>
+                                    <span th:unless="${prod?.destacado == 1}" class="badge badge-no">NO</span>
+                                </td>
+                                <td class="text-center pe-4 td-actions">
+                                    <div class="d-flex justify-content-center">
+                                        <a th:href="@{/productos/view/{id}(id=${prod?.id})}" class="btn btn-detail shadow-sm"> Detalle </a>
+                                        <a th:href="@{/productos/delete(id=${prod?.id})}" class="btn btn-delete shadow-sm"> Eliminar </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
-
-            <table class="table table-striped table-hover mt-3">
-                <thead class="thead-dark">
-                    <tr>
-                        <th scope="col">ID</th>
-                        <th scope="col">IMAGEN</th>
-                        <th scope="col">NOMBRE</th>
-                        <th scope="col">FECHA</th>
-                        <th scope="col">PRECIO</th>
-                        <th scope="col">DESTACADO</th>
-                        <th scope="col">¿ACTIVO?</th>
-                        <th scope="col" class="text-center">ACCIONES</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr th:each="prod : ${productos}">
-                        <td th:text="${prod?.id}"></td>
-                        
-                        <td>
-                            <img th:src="@{/images/{img} (img=${prod?.imagen != null && prod?.imagen != '' ? prod.imagen : 'no-image.png'})}" 
-                                 class="rounded" 
-                                 style="max-width: 50px; height: auto;" 
-                                 alt="Imagen Producto">
-                        </td>
-                        
-                        <td th:text="${prod?.nombre}"></td>
-                        
-                        <td th:text="${prod?.fecha != null ? #dates.format(prod.fecha, 'dd-MM-yyyy') : 'Sin fecha'}"></td>
-                        
-                        <td th:text="${'$' + prod?.precio}"></td>
-                        
-                        <td>
-                            <span th:if="${prod?.destacado == 1}" class="badge badge-success">SÍ</span>
-                            <span th:if="${prod?.destacado != 1}" class="badge badge-danger">NO</span>
-                        </td>
-                        
-                        <td>
-                            <span th:if="${prod?.activo}" class="badge badge-success">Sí</span>
-                            <span th:if="${!prod?.activo}" class="badge badge-danger">No</span>
-                        </td>
-                        
-                        <td class="text-center">
-                            <a th:href="@{/productos/view/{id} (id=${prod?.id})}" class="btn btn-success btn-sm">Detalle</a>
-                            <a th:href="@{/productos/delete (id=${prod?.id})}" class="btn btn-danger btn-sm">Eliminar</a>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-            
         </div>
     </div>
+
+    <footer th:insert="~{fragments/footer :: pie-pagina}"></footer>
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <script th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
 </body>
-</html>/html>
+</html>

@@ -12,7 +12,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
     "com.TechStore.Controllers"
 })
 @EnableJpaRepositories(basePackages = "com.TechStore.Repository")
-@EntityScan(basePackages = "com.TechStore.models") // <-- ¡ESTA LÍNEA SOLUCIONA EL ERROR!
+@EntityScan(basePackages = "com.TechStore.models")
 public class TechStoreApplication {
 
     public static void main(String[] args) {

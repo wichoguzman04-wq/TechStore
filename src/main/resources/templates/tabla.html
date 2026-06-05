@@ -1,86 +1,192 @@
-<!DOCTYPE html> 
+<!doctype html>
 <html xmlns:th="http://www.thymeleaf.org" lang="es">
 <head> 
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>TechShop | Inventario de Productos</title>
-    <link th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
-    <link th:href="@{/bootstrap/css/sticky-footer-navbar.css}" rel="stylesheet">
+    <link th:href="@/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@/bootstrap/css/jumbotron.css}" rel="stylesheet">
+    <link th:href="@/bootstrap/css/sticky-footer-navbar.css}" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">
+    
     <style>
         body { padding-top: 5.5rem; }
         .container-fluid { padding-left: 5%; padding-right: 5%; }
-        .table thead th { vertical-align: middle; text-transform: uppercase; font-size: 0.9rem; padding: 15px; }
-        .prod-img { object-fit: cover; border: 1px solid #dee2e6; }
-        .btn-detail { background-color: #007bff; border-color: #007bff; color: white; padding: 0.5rem 1rem; margin-right: 8px; }
-        .btn-detail:hover { background-color: #0069d9; color: white; }
-        .btn-delete { background-color: #dc3545; border-color: #dc3545; color: white; padding: 0.5rem 1rem; }
-        .btn-delete:hover { background-color: #c82333; color: white; }
-        .badge-yes { background-color: #d1e7dd; color: #0f5132; border: 1px solid #badbcc; padding: 0.6em 1em; font-weight: bold; }
-        .badge-no { background-color: #f8d7da; color: #842029; border: 1px solid #f5c2c7; padding: 0.6em 1em; font-weight: bold; }
+        
+        /* Estilos modernos para la tabla */
+        .table {
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+        .table thead th { 
+            vertical-align: middle; 
+            text-transform: uppercase; 
+            font-size: 0.8rem; 
+            letter-spacing: 0.5px;
+            font-weight: 700;
+            padding: 16px; 
+            background-color: #f8f9fa;
+            color: #495057;
+            border-bottom: 2px solid #dee2e6;
+            border-top: none;
+        }
+        .table tbody td {
+            vertical-align: middle;
+            padding: 16px;
+            color: #4f5d73;
+        }
+        
+        /* Efecto de transición suave en las filas */
+        .table tbody tr {
+            transition: all 0.2s ease-in-out;
+        }
+        .table tbody tr:hover {
+            background-color: rgba(0, 123, 255, 0.04) !important;
+            transform: scale(1.002);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+        }
+        
+        /* Animación y diseño de las imágenes */
+        .prod-img { 
+            object-fit: cover; 
+            border: 1px solid #e3e6f0; 
+            transition: transform 0.2s ease;
+        }
+        .table tr:hover .prod-img {
+            transform: scale(1.08);
+        }
+        
+        /* Botones estilizados con micro-interacciones */
+        .btn-detail { 
+            background-color: #4e73df; 
+            border-color: #4e73df; 
+            color: white; 
+            padding: 0.4rem 1rem; 
+            margin-right: 8px; 
+            font-size: 0.85rem;
+            font-weight: 600;
+            border-radius: 5px;
+            transition: all 0.2s;
+        }
+        .btn-detail:hover { background-color: #2e59d9; border-color: #264dc2; color: white; transform: translateY(-1px); }
+        
+        .btn-delete { 
+            background-color: #e74a3b; 
+            border-color: #e74a3b; 
+            color: white; 
+            padding: 0.4rem 1rem; 
+            font-size: 0.85rem;
+            font-weight: 600;
+            border-radius: 5px;
+            transition: all 0.2s;
+        }
+        .btn-delete:hover { background-color: #be2617; border-color: #be2617; color: white; transform: translateY(-1px); }
+        
+        /* Badges estilo Pill redondeado */
+        .badge-yes { 
+            background-color: #e2f9ee; 
+            color: #1f7a52; 
+            border: 1px solid #c3f3db; 
+            padding: 0.5em 1.2em; 
+            font-weight: 600; 
+            border-radius: 30px;
+            font-size: 0.75rem;
+        }
+        .badge-no { 
+            background-color: #fff0f1; 
+            color: #b93c46; 
+            border: 1px solid #ffe0e2; 
+            padding: 0.5em 1.2em; 
+            font-weight: 600; 
+            border-radius: 30px;
+            font-size: 0.75rem;
+        }
+        
+        .price-text { font-weight: 700; color: #4e73df; font-size: 1.1rem; }
         .td-actions { min-width: 220px; }
-        .price-text { font-weight: 600; color: #333; font-size: 1.1rem; }
+        .product-title { font-weight: 600; color: #2e3a59; }
     </style>
 </head>
 <body class="bg-light">
 
     <header th:insert="~{fragments/menu :: menu-principal}"></header>
 
-    <div class="container-fluid mt-4">
-        <div class="d-flex align-items-center mb-4">
-            <h1 class="h2 mb-0 text-dark font-weight-bold">Inventario TechStore</h1>
-        </div>
+    <main role="main">
+        <hr>
+        <div class="container-fluid mt-4">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2 class="h3 mb-0 text-dark font-weight-bold">Inventario TechShop</h2>
+                <a th:href="@{/productos/create}" class="btn btn-sm btn-success px-3 py-2 font-weight-bold shadow-sm">
+                    <i class="fas fa-plus mr-1"></i> Nuevo Producto
+                </a>
+            </div>
 
-        <div class="card shadow-sm border-0">
-            <div class="card-body p-0">
-                <div class="table-responsive">
-                    <table class="table table-hover align-middle mb-0">
-                        <thead class="bg-dark text-white">
-                            <tr>
-                                <th class="ps-4">Vista</th>
-                                <th>ID</th>
-                                <th>Producto</th>
-                                <th>Publicación</th>
-                                <th>Precio</th>
-                                <th style="width: 30%;">Descripción</th>
-                                <th class="text-center">Destacado</th>
-                                <th class="text-center pe-4">Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr th:each="prod : ${productos}">
-                                <td class="ps-4">
-                                    <img th:src="@{/images/{img}(img=${prod?.imagen != null && prod?.imagen != '' ? prod.imagen : 'no-image.png'})}"
-                                         width="75" height="75" class="rounded prod-img shadow-sm" />
-                                </td>
-                                <td class="font-weight-bold" th:text="${prod?.id}"></td>
-                                <td class="font-weight-bold" th:text="${prod?.nombre}"></td>
-                                
-                                <td class="text-muted" th:text="${prod?.fecha != null ? #dates.format(prod.fecha, 'dd-MM-yyyy') : 'Sin fecha'}"></td>
-                                
-                                <td><span class="price-text" th:text="${'$' + prod?.precio}"></span></td>
-                                
-                                <td class="text-muted small" th:text="${prod?.detalle}"></td>
-                                
-                                <td class="text-center">
-                                    <span th:if="${prod?.destacado == 1}" class="badge badge-yes">SÍ</span>
-                                    <span th:unless="${prod?.destacado == 1}" class="badge badge-no">NO</span>
-                                </td>
-                                <td class="text-center pe-4 td-actions">
-                                    <div class="d-flex justify-content-center">
-                                        <a th:href="@{/productos/view/{id}(id=${prod?.id})}" class="btn btn-detail shadow-sm"> Detalle </a>
-                                        <a th:href="@{/productos/delete/{id}(id=${prod?.id})}" class="btn btn-delete shadow-sm"> Eliminar </a>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+            <div th:if="${msg != null}" class="alert alert-success alert-dismissible fade show shadow-sm" role="alert">
+                <i class="fas fa-check-circle mr-2"></i> <span th:text="${msg}"></span>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="card shadow-sm border-0 mb-5" style="border-radius: 8px; overflow: hidden;">
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead>
+                                <tr>
+                                    <th class="text-center" style="width: 80px;">Vista</th>
+                                    <th style="width: 60px;">ID</th>
+                                    <th>Producto</th>
+                                    <th>Publicación</th>
+                                    <th>Precio</th>
+                                    <th style="width: 35%;">Descripción</th>
+                                    <th class="text-center">Destacado</th>
+                                    <th class="text-center td-actions">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="prod : ${productos}">
+                                    <td class="text-center">
+                                        <img th:src="@{/images/{img}(img=${prod?.imagen != null && prod?.imagen != '' ? prod.imagen : 'no-image.png'})}"
+                                             width="55" height="55" class="rounded prod-img shadow-sm" alt="Miniatura"/>
+                                    </td>
+                                    <td class="font-weight-bold text-secondary" th:text="${prod?.id}"></td>
+                                    <td class="product-title" th:text="${prod?.nombre}"></td>
+                                    
+                                    <td class="text-muted" th:text="${prod?.fecha != null ? #dates.format(prod.fecha, 'dd-MM-yyyy') : 'Sin fecha'}"></td>
+                                    
+                                    <td><span class="price-text" th:text="${'$' + prod?.precio}"></span></td>
+                                    
+                                    <td class="text-muted small text-justify" th:text="${prod?.detalle}"></td>
+                                    
+                                    <td class="text-center">
+                                        <span th:if="${prod?.destacado == 1}" class="badge badge-yes">SÍ</span>
+                                        <span th:unless="${prod?.destacado == 1}" class="badge badge-no">NO</span>
+                                    </td>
+                                    <td class="text-center td-actions">
+                                        <div class="d-flex justify-content-center align-items-center">
+                                            <a th:href="@{/productos/view/{id}(id=${prod?.id})}" class="btn btn-detail shadow-sm">
+                                                <i class="fas fa-eye mr-1"></i> Detalle
+                                            </a>
+                                            <a th:href="@{/productos/delete(id=${prod?.id})}" 
+                                               class="btn btn-delete shadow-sm"
+                                               onclick="return confirm('¿Está seguro de que desea eliminar este producto del inventario?')">
+                                                <i class="fas fa-trash-alt mr-1"></i> Eliminar
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    </main>
 
     <footer th:insert="~{fragments/footer :: pie-pagina}"></footer>
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <script th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
 </body>
-</html> 
+</html>

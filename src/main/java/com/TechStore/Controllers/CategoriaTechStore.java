@@ -13,7 +13,6 @@ public class CategoriaTechStore {
 	
     @GetMapping("/index")
     public String mostrarIndex(Model model) {
-
         return "listCategoria";
     }
 

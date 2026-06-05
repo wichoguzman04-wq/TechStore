@@ -67,9 +67,8 @@
                     <p th:text="${prod?.descripcion}">Descripción detallada del producto...</p>
 
                     <p>
-                        <a th:href="@{/detalle/{id}(id=${prod?.id})}" class="btn btn-primary">
-                            Ver detalles >>
-                        </a>
+                        <a class="btn btn-secondary"
+                            th:href="@{/productos/view/{id} (id=${prod?.id})}" role="button">Ver detalles &raquo;</a>
                     </p>
                 </div>
                 <hr class="col-12">
