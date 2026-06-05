@@ -24,7 +24,6 @@ public class TechStoreController {
     @Autowired
     private ITechStoreService service;
 
-    // Movimos la inyección del servicio de categorías al inicio de forma ordenada
     @Autowired
     private ICategoriaService categoriaService;
 
