@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import com.TechStore.Services.ITechStoreService;
+import com.TechStore.Services.ICategoriaService;
 import com.TechStore.models.TechStore;
 
 @Controller
@@ -16,10 +17,16 @@ public class HomeController {
     @Autowired
     private ITechStoreService service;
 
+    @Autowired
+    private ICategoriaService categoriaService;
+
     @GetMapping("/")
     public String mostrarHome(Model model) {
         List<TechStore> lista = service.buscarTodo();
         model.addAttribute("productos", lista);
+
+        model.addAttribute("listaCategorias", categoriaService.buscarTodas());
+        
         return "home";
     }
 
@@ -48,13 +55,5 @@ public class HomeController {
         return "mensaje";
     }
 
-    @GetMapping("/formCategoria")
-    public String mostrarFormularioCategoria() {
-        return "formCategoria";
-    }
 
-    @GetMapping("/listCategoria")
-    public String mostrarListadoCategorias() {
-        return "listCategoria";
-    }
 }

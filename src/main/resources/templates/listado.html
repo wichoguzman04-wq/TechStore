@@ -45,6 +45,11 @@
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h2 class="h3 mb-0 font-weight-bold">Inventario TechStore</h2>
                 <div>
+                    <!-- Botón de Nueva Categoría restaurado -->
+                    <a th:href="@{/categorias/create}" class="btn btn-sm px-3 py-2 font-weight-bold shadow-sm mr-2" style="background-color: #6366f1; border-color: #6366f1; color: white;">
+                        <i class="fas fa-folder-plus mr-1"></i> Nueva Categoría
+                    </a>
+                    
                     <a th:href="@{/productos/create}" class="btn btn-sm btn-success px-3 py-2 font-weight-bold shadow-sm" style="background-color: #16a34a; border-color: #16a34a;">
                         <i class="fas fa-plus mr-1"></i> Nuevo Producto
                     </a>

@@ -18,7 +18,6 @@ public class Perfil {
 	private String descripcion;
 	private boolean activo;
 	
-	// Getters y Setters
 	public Integer getId() {
 		return id;
 	}

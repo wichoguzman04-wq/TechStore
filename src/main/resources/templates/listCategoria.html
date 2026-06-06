@@ -2,51 +2,88 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="es">
 <head> 
     <meta charset="UTF-8">
-    <title>TechStore | Gestión de Categorías</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>TechStore | Categorías</title>
+    
     <link th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
     <style>
         body { background-color: #0f172a; color: #e2e8f0; font-family: 'Poppins', sans-serif; padding-top: 5.5rem; }
-        .card { background-color: #1e293b; border: 1px solid #334155; border-radius: 12px; box-shadow: 0 8px 30px rgba(0,0,0,0.4); }
-        .table { color: #cbd5e1; }
-        .table thead th { background-color: #0f172a; color: #94a3b8; border-bottom: 2px solid #334155; }
-        .table tbody td { border-top: 1px solid #334155; }
-        .btn-delete { background-color: #e11d48; color: white; }
+        .card { background-color: #1e293b; border: 1px solid #334155; border-radius: 12px; box-shadow: 0 8px 30px rgba(0,0,0,0.4); overflow: hidden; }
+        .table { color: #cbd5e1; margin-bottom: 0; }
+        .table thead th { background-color: #0f172a; color: #94a3b8; border-bottom: 2px solid #334155; border-top: none; text-transform: uppercase; font-size: 0.8rem; padding: 16px; }
+        .table tbody td { border-top: 1px solid #334155; vertical-align: middle; padding: 16px; }
+        .table tbody tr:hover { background-color: #283548; }
+        
+        .btn-danger { background-color: #e11d48; border-color: #e11d48; font-weight: 600; }
     </style>
 </head>
 <body>
+
     <header th:insert="~{fragments/menu :: menu-principal}"></header>
 
     <main role="main">
         <div class="container mt-4">
+            
             <div class="d-flex justify-content-between align-items-center mb-4">
-                <h2 style="color: #38bdf8;">Gestión de Categorías</h2>
-                <a th:href="@{/categorias/create}" class="btn btn-success"><i class="fas fa-plus"></i> Nueva Categoría</a>
+                <h2 class="h3 mb-0 font-weight-bold" style="color: #38bdf8;">Gestión de Categorías</h2>
+                <div>
+                    <a th:href="@{/productos/index}" class="btn btn-sm btn-secondary px-3 py-2 font-weight-bold shadow-sm mr-2" style="background-color: #334155; border-color: #334155;">
+                        <i class="fas fa-arrow-left mr-1"></i> Volver a Inventario
+                    </a>
+                    <a th:href="@{/categorias/create}" class="btn btn-sm px-3 py-2 font-weight-bold shadow-sm" style="background-color: #6366f1; border-color: #6366f1; color: white;">
+                        <i class="fas fa-plus mr-1"></i> Nueva Categoría
+                    </a>
+                </div>
             </div>
 
-            <div class="card">
-                <table class="table mb-0">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Nombre</th>
-                            <th>Descripción</th>
-                            <th class="text-center">Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr th:each="cat : ${categorias}">
-                            <td th:text="${cat.id}"></td>
-                            <td th:text="${cat.nomCategoria}"></td>
-                            <td th:text="${cat.descripcion}"></td>
-                            <td class="text-center">
-                                <a th:href="@{/categorias/delete(id=${cat.id})}" class="btn btn-sm btn-delete" onclick="return confirm('¿Seguro?')"><i class="fas fa-trash-alt"></i></a>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+            <div th:if="${msg != null}" class="alert alert-success alert-dismissible fade show" role="alert" style="background-color: #16a34a; color: white; border: none;">
+                <i class="fas fa-check-circle mr-2"></i><span th:text="${msg}"></span>
+                <button type="button" class="close text-white" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="card mb-5">
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nombre de la Categoría</th>
+                                    <th>Descripción</th>
+                                    <th class="text-center">Eliminar</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="cat : ${categorias}">
+                                    <td class="font-weight-bold" style="color: #94a3b8;" th:text="${cat.id}"></td>
+                                    <td style="color: #f8fafc; font-weight: 600;" th:text="${cat.nomCategoria}"></td>
+                                    <td style="color: #94a3b8;" th:text="${cat.descripcion}"></td>
+                                    <td class="text-center">
+                                        <a th:href="@{/categorias/delete(id=${cat.id})}" class="btn btn-sm btn-danger shadow-sm" onclick="return confirm('¿Estás seguro de que deseas eliminar esta categoría?');">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        
+                        <div th:if="${categorias == null or categorias.isEmpty()}" class="text-center p-5">
+                            <p class="text-muted"><i class="fas fa-tags fa-2x mb-2"></i><br>No hay categorías registradas.</p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </main>
+
+    <footer th:insert="~{fragments/footer :: pie-pagina}"></footer>
+    
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script th:src="@{/bootstrap/js/bootstrap.bundle.min.js}"></script>
 </body>
 </html>
